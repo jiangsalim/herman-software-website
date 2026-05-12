@@ -9,6 +9,7 @@ import { BackToTop } from "@/components/ui/BackToTop";
 import { SkipLink } from "@/components/ui/SkipLink";
 import { PageTransition } from "@/components/shared/PageTransition";
 import { generateLocalBusinessSchema } from "@/lib/seo";
+import { CookieBanner } from "@/components/shared/CookieBanner";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
