@@ -24,14 +24,24 @@ export default function ClientPortalPage() {
             </div>
             <h2 className="mb-4">Access Your Dashboard</h2>
             <p className="mb-6 text-charcoal">
-              Client portal access is provided to active projects. Contact your project manager
-              if you need credentials or assistance.
+              Choose how you&apos;d like to reach us. We&apos;ll get you set up with access to your project dashboard.
             </p>
-            <Button href="#" variant="primary">
-              Access Portal
-            </Button>
-            <p className="mt-4 text-body-sm text-gray-medium">
-              Credentials required. Contact your project manager for access.
+            <div className="flex flex-col gap-3">
+              <Button
+                href="https://wa.me/256772723188?text=Hi%20HERMAN%20Team%2C%20I%20need%20access%20to%20my%20project%20dashboard"
+                variant="primary"
+              >
+                Chat on WhatsApp
+              </Button>
+              <Button
+                href="mailto:infohermansoftware@gmail.com?subject=Client Portal Access Request"
+                variant="secondary"
+              >
+                Request via Email
+              </Button>
+            </div>
+            <p className="mt-6 text-body-sm text-gray-medium">
+              We typically respond within a few hours during business hours (Monday–Friday, 9 AM – 5 PM EAT).
             </p>
           </div>
         </div>
