@@ -166,6 +166,7 @@ export default function RootLayout({
               })();
             `,
           }}
+        <CookieBanner
         />
       </body>
     </html>
