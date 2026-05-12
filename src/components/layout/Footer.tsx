@@ -95,7 +95,7 @@ export function Footer() {
       {/* Bottom Bar */}
       <div className="border-t border-navy">
         <div className="container-site flex flex-col items-center justify-between gap-4 py-4 text-center sm:flex-row sm:text-left">
-          <p className="text-body-sm text-gray-medium">{siteConfig.copyright}</p>
+          <p className="text-body-sm text-gray-medium">Last updated: May 2026 &nbsp;|&nbsp; {siteConfig.copyright}</p>
           <div className="flex gap-4">
             <a href="/privacy-policy" className="text-body-sm text-gray-medium hover:text-teal">Privacy Policy</a>
             <a href="/terms-of-service" className="text-body-sm text-gray-medium hover:text-teal">Terms</a>
