@@ -9,9 +9,9 @@ export const siteConfig = {
   ogImage: "/images/og-default.jpg",
 
   address: "Haji Tarmchi, Jinja, Uganda",
-  email: "info@hermansoftware.com",
-  phone: "+256-XXX-XXXXXX",
-  whatsapp: "+256XXXXXXXXX",
+  email: "infohermansoftware@gmail.com",
+  phone: "+256-772-723-188",
+  whatsapp: "+256772723188",
   officeHours: "Monday–Friday, 9:00 AM – 5:00 PM EAT",
 
   googleMapsEmbedUrl:
