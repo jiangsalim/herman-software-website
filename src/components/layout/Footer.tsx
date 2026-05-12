@@ -37,7 +37,7 @@ export function Footer() {
               <li><a href="/about" className="text-body-sm text-gray-medium hover:text-teal">About</a></li>
               <li><a href="/our-work" className="text-body-sm text-gray-medium hover:text-teal">Our Work</a></li>
               <li><a href="/blog" className="text-body-sm text-gray-medium hover:text-teal">Blog</a></li>
-              <li><a href="/sitemap.xml"    className="text-body-sm text-gray-medium hover:text-teal">Sitemap</a></li>
+              <li><a href="/contact#map" className="text-body-sm text-gray-medium hover:text-teal">Find Us</a></li>
               <li><a href="/contact" className="text-body-sm text-gray-medium hover:text-teal">Contact</a></li>
             </ul>
           </div>
@@ -98,7 +98,8 @@ export function Footer() {
           <p className="text-body-sm text-gray-medium">{siteConfig.copyright}</p>
           <div className="flex gap-4">
             <a href="/privacy-policy" className="text-body-sm text-gray-medium hover:text-teal">Privacy Policy</a>
-            <a href="/terms-of-service" className="text-body-sm text-gray-medium hover:text-teal">Terms of Service</a>
+            <a href="/terms-of-service" className="text-body-sm text-gray-medium hover:text-teal">Terms</a>
+            <a href="/sitemap.xml" className="text-body-sm text-gray-medium hover:text-teal">Sitemap</a>
           </div>
         </div>
       </div>
