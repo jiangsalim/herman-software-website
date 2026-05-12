@@ -27,6 +27,7 @@ const NAV_LINKS = [
 export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
+  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const pathname = usePathname();
 
   const isActive = (href: string) => pathname === href;
@@ -137,80 +138,80 @@ export function Header() {
       </div>
 
       {/* Mobile Menu Overlay */}
-{mobileOpen && (
-  <div className="fixed inset-0 top-16 z-40 bg-white lg:hidden overflow-y-auto">
-    <nav className="container-site flex flex-col gap-1 py-4" aria-label="Mobile navigation">
-      {NAV_LINKS.map((link) => {
-        // Services dropdown in mobile
-        if ("children" in link && link.children) {
-          return (
-            <div key={link.label} className="border-b border-gray-light py-1">
-              <button
-                onClick={() => setServicesOpen(!servicesOpen)}
-                className="flex w-full items-center justify-between px-4 py-3 text-body font-medium text-charcoal hover:text-teal"
-              >
-                {link.label}
-                <svg
-                  className={`h-4 w-4 transition-transform ${servicesOpen ? "rotate-180" : ""}`}
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-                </svg>
-              </button>
-              {servicesOpen && (
-                <div className="ml-4 border-l-2 border-gray-light pl-4">
-                  {link.children.map((child) => (
-                    <a
-                      key={child.href}
-                      href={child.href}
-                      onClick={() => setMobileOpen(false)}
-                      className={`block px-4 py-2 text-body-sm transition-colors hover:text-teal ${
-                        isActive(child.href) ? "font-medium text-teal" : "text-charcoal"
-                      }`}
+      {mobileOpen && (
+        <div className="fixed inset-0 top-16 z-40 bg-white lg:hidden overflow-y-auto">
+          <nav className="container-site flex flex-col gap-1 py-4" aria-label="Mobile navigation">
+            {NAV_LINKS.map((link) => {
+              if ("children" in link && link.children) {
+                return (
+                  <div key={link.label} className="border-b border-gray-light py-1">
+                    <button
+                      onClick={() => setMobileServicesOpen(!mobileServicesOpen)}
+                      className="flex w-full items-center justify-between px-4 py-3 text-body font-medium text-charcoal hover:text-teal"
                     >
-                      {child.label}
-                    </a>
-                  ))}
-                </div>
-              )}
+                      {link.label}
+                      <svg
+                        className={`h-4 w-4 transition-transform ${mobileServicesOpen ? "rotate-180" : ""}`}
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                      </svg>
+                    </button>
+                    {mobileServicesOpen && (
+                      <div className="ml-4 border-l-2 border-gray-light pl-4">
+                        {link.children.map((child) => (
+                          <a
+                            key={child.href}
+                            href={child.href}
+                            onClick={() => setMobileOpen(false)}
+                            className={`block px-4 py-2 text-body-sm transition-colors hover:text-teal ${
+                              isActive(child.href) ? "font-medium text-teal" : "text-charcoal"
+                            }`}
+                          >
+                            {child.label}
+                          </a>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                );
+              }
+
+              return (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  onClick={() => setMobileOpen(false)}
+                  className={`rounded-md px-4 py-3 text-body font-medium transition-colors ${
+                    isActive(link.href) ? "bg-gray-light text-teal" : "text-charcoal hover:bg-gray-light hover:text-teal"
+                  }`}
+                >
+                  {link.label}
+                </a>
+              );
+            })}
+
+            <div className="mt-4 flex flex-col gap-3 border-t border-gray-light pt-6 px-4">
+              <a
+                href="/client-portal"
+                onClick={() => setMobileOpen(false)}
+                className="rounded-md border border-navy px-4 py-3 text-center text-body-sm font-medium text-navy"
+              >
+                Client Portal
+              </a>
+              <a
+                href="/get-quote"
+                onClick={() => setMobileOpen(false)}
+                className="rounded-md bg-teal px-4 py-3 text-center text-body-sm font-medium text-white"
+              >
+                Get a Quote
+              </a>
             </div>
-          );
-        }
-
-        // Regular links
-        return (
-          <a
-            key={link.href}
-            href={link.href}
-            onClick={() => setMobileOpen(false)}
-            className={`rounded-md px-4 py-3 text-body font-medium transition-colors ${
-              isActive(link.href) ? "bg-gray-light text-teal" : "text-charcoal hover:bg-gray-light hover:text-teal"
-            }`}
-          >
-            {link.label}
-          </a>
-        );
-      })}
-
-      {/* Mobile CTAs */}
-      <div className="mt-4 flex flex-col gap-3 border-t border-gray-light pt-6 px-4">
-        <a
-          href="/client-portal"
-          onClick={() => setMobileOpen(false)}
-          className="rounded-md border border-navy px-4 py-3 text-center text-body-sm font-medium text-navy"
-        >
-          Client Portal
-        </a>
-        <a
-          href="/get-quote"
-          onClick={() => setMobileOpen(false)}
-          className="rounded-md bg-teal px-4 py-3 text-center text-body-sm font-medium text-white"
-        >
-          Get a Quote
-        </a>
-      </div>
-    </nav>
-  </div>
-)}
+          </nav>
+        </div>
+      )}
+    </header>
+  );
+}
