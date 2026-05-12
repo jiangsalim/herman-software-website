@@ -7,8 +7,8 @@ import { Footer } from "@/components/layout/Footer";
 import { WhatsAppButton } from "@/components/layout/WhatsAppButton";
 import { BackToTop } from "@/components/ui/BackToTop";
 import { SkipLink } from "@/components/ui/SkipLink";
-import { generateLocalBusinessSchema } from "@/lib/seo";
 import { PageTransition } from "@/components/shared/PageTransition";
+import { generateLocalBusinessSchema } from "@/lib/seo";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -78,13 +78,13 @@ export const metadata: Metadata = {
     google: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION || "",
   },
   icons: {
-  icon: [
-    { url: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230A1F3F'/><text x='50' y='68' text-anchor='middle' font-family='Arial,sans-serif' font-size='55' font-weight='bold' fill='white'>HS</text></svg>" },
-  ],
-  apple: [
-    { url: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230A1F3F'/><text x='50' y='68' text-anchor='middle' font-family='Arial,sans-serif' font-size='55' font-weight='bold' fill='white'>HS</text></svg>" },
-  ],
-},
+    icon: [
+      { url: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230A1F3F'/><text x='50' y='68' text-anchor='middle' font-family='Arial,sans-serif' font-size='55' font-weight='bold' fill='white'>HS</text></svg>" },
+    ],
+    apple: [
+      { url: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230A1F3F'/><text x='50' y='68' text-anchor='middle' font-family='Arial,sans-serif' font-size='55' font-weight='bold' fill='white'>HS</text></svg>" },
+    ],
+  },
   alternates: {
     canonical: siteConfig.url,
   },
@@ -108,7 +108,6 @@ export default function RootLayout({
             __html: JSON.stringify(localBusinessSchema),
           }}
         />
-        {/* Prevent flash of wrong theme */}
         <script
           dangerouslySetInnerHTML={{
             __html: `
@@ -122,54 +121,51 @@ export default function RootLayout({
           }}
         />
         {/* Google Analytics */}
-{process.env.NEXT_PUBLIC_GA_ID && (
-  <>
-    <script async src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`} />
-    <script
-      dangerouslySetInnerHTML={{
-        __html: `
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-          gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
-        `,
-      }}
-    />
-  </>
-)}
+        {process.env.NEXT_PUBLIC_GA_ID && (
+          <>
+            <script async src={`https://www.googletagmanager.com/gtag/js?id=${process.env.NEXT_PUBLIC_GA_ID}`} />
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `
+                  window.dataLayer = window.dataLayer || [];
+                  function gtag(){dataLayer.push(arguments);}
+                  gtag('js', new Date());
+                  gtag('config', '${process.env.NEXT_PUBLIC_GA_ID}');
+                `,
+              }}
+            />
+          </>
+        )}
       </head>
       <body className="flex min-h-screen flex-col bg-white text-charcoal dark:bg-navy-dark dark:text-gray-light transition-colors">
         <SkipLink />
         <Header />
         <main className="flex-1">
-  <PageTransition>
-    {children}
-  </PageTransition>
-</main>
-    <Footer />
-    <WhatsAppButton />
-    <BackToTop />
+          <PageTransition>
+            {children}
+          </PageTransition>
+        </main>
+        <Footer />
+        <WhatsAppButton />
+        <BackToTop />
 
-    {/* Tawk.to Live Chat */}
-    <script
-      type="text/javascript"
-      dangerouslySetInnerHTML={{
-        __html: `
-          var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-          (function(){
-            var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-            s1.async=true;
-            s1.src='https://embed.tawk.to/6a031e36b31dab1c398e1064/1joe2s2dm';
-            s1.charset='UTF-8';
-            s1.setAttribute('crossorigin','*');
-            s0.parentNode.insertBefore(s1,s0);
-          })();
-        `,
-      }}
-    />
-  </body>
-</html>
-        
+        {/* Tawk.to Live Chat */}
+        <script
+          type="text/javascript"
+          dangerouslySetInnerHTML={{
+            __html: `
+              var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+              (function(){
+                var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+                s1.async=true;
+                s1.src='https://embed.tawk.to/6a031e36b31dab1c398e1064/1joe2s2dm';
+                s1.charset='UTF-8';
+                s1.setAttribute('crossorigin','*');
+                s0.parentNode.insertBefore(s1,s0);
+              })();
+            `,
+          }}
+        />
       </body>
     </html>
   );
