@@ -70,3 +70,48 @@
     opacity: 0.05;
   }
 }
+        /* ── Print Styles ────────────────────────────── */
+@media print {
+  header,
+  footer,
+  .fixed,
+  nav,
+  button,
+  [role="banner"],
+  [role="contentinfo"],
+  iframe {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+    font-size: 12pt !important;
+    line-height: 1.5 !important;
+  }
+
+  h1, h2, h3, h4 {
+    color: black !important;
+    page-break-after: avoid;
+  }
+
+  a {
+    color: black !important;
+    text-decoration: underline;
+  }
+
+  .container-site {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  main {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  @page {
+    margin: 1.5cm;
+  }
+}
