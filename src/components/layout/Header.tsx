@@ -92,7 +92,12 @@ export function Header() {
               <a href="/get-quote" className="rounded-md bg-teal px-4 py-2 text-body-sm font-medium text-white transition-colors hover:bg-teal-dark">Get a Quote</a>
             </div>
 
+            {/* Theme Toggle */}
+<ThemeToggle />
+
             {/* Mobile Toggle */}
+<button
+  onClick={() => setMobileOpen(!mobileOpen)}
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
               className="flex items-center justify-center rounded-md p-2 text-navy lg:hidden"
