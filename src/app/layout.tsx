@@ -150,23 +150,47 @@ export default function RootLayout({
         <WhatsAppButton />
         <BackToTop />
 
-        {/* Tawk.to Live Chat */}
-        <script
-          type="text/javascript"
-          dangerouslySetInnerHTML={{
-            __html: `
-              var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-              (function(){
-                var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-                s1.async=true;
-                s1.src='https://embed.tawk.to/6a031e36b31dab1c398e1064/1joe2s2dm';
-                s1.charset='UTF-8';
-                s1.setAttribute('crossorigin','*');
-                s0.parentNode.insertBefore(s1,s0);
-              })();
-            `,
-          }}
-         />
+        {/* Tawk.to Live Chat with persistent visitor identity */}
+<script
+  type="text/javascript"
+  dangerouslySetInnerHTML={{
+    __html: `
+      var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+      
+      // Store visitor ID in localStorage so they get the same ID on return visits
+      (function(){
+        var visitorId = localStorage.getItem('tawk_visitor_id');
+        if (!visitorId) {
+          visitorId = 'visitor_' + Math.random().toString(36).substr(2, 9) + '_' + Date.now();
+          localStorage.setItem('tawk_visitor_id', visitorId);
+        }
+        
+        // Set visitor info BEFORE widget loads
+        Tawk_API.visitor = {
+          name: 'Returning Visitor',
+          email: visitorId + '@placeholder.tawk.to'
+        };
+        
+        // This links the visitor to their previous chats
+        Tawk_API.onLoad = function(){
+          if (Tawk_API.setAttributes) {
+            Tawk_API.setAttributes({
+              id: visitorId,
+              hash: visitorId
+            }, function(error){});
+          }
+        };
+      })();
+      
+      var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+      s1.async=true;
+      s1.src='https://embed.tawk.to/6a031e36b31dab1c398e1064/1joe2s2dm';
+      s1.charset='UTF-8';
+      s1.setAttribute('crossorigin','*');
+      s0.parentNode.insertBefore(s1,s0);
+    `,
+  }}
+/>
         <CookieBanner />
       </body>
     </html>
