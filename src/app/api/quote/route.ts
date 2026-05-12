@@ -5,17 +5,17 @@ import { sendEmail, buildQuoteEmail } from "@/lib/email";
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    
-    // Validate the data
+    console.log("Quote form body received:", JSON.stringify(body));
+
     const result = quoteFormSchema.safeParse(body);
     if (!result.success) {
+      console.error("Quote validation failed:", result.error.flatten().fieldErrors);
       return NextResponse.json(
         { error: "Validation failed", details: result.error.flatten().fieldErrors },
         { status: 400 }
       );
     }
 
-    // Build and send email
     const { subject, html } = buildQuoteEmail(result.data);
     const emailResult = await sendEmail({ subject, html });
 
