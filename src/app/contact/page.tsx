@@ -97,6 +97,16 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
+
+       {/* FAQ Section */}
+      <section className="section-padding bg-gray-light">
+        <div className="container-site">
+          <h2 className="mb-8 text-center">Frequently Asked Questions</h2>
+          <div className="mx-auto max-w-3xl">
+            <FAQAccordion faqs={faqs} />
+          </div>
+        </div>
+      </section>
     </>
   );
 }
