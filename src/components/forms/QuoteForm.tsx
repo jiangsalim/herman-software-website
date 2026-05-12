@@ -8,11 +8,40 @@ import { Button } from "@/components/shared/Button";
 
 const STEPS = ["Contact Info", "Project Type", "Project Details"];
 
+interface FormData {
+  name: string;
+  email: string;
+  phone: string;
+  company: string;
+  projectType: string[];
+  budget: string;
+  timeline: string;
+  description: string;
+  techPreferences: string;
+  source: string;
+}
+
 export function QuoteForm() {
   const [step, setStep] = useState(0);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [formData, setFormData] = useState<FormData>({
+    name: "",
+    email: "",
+    phone: "",
+    company: "",
+    projectType: [],
+    budget: "",
+    timeline: "",
+    description: "",
+    techPreferences: "",
+    source: "",
+  });
+
+  const updateField = (field: keyof FormData, value: string | string[]) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
 
   const nextStep = () => setStep((s) => Math.min(s + 1, STEPS.length - 1));
   const prevStep = () => setStep((s) => Math.max(s - 1, 0));
@@ -22,29 +51,15 @@ export function QuoteForm() {
     setLoading(true);
     setError("");
 
-    const form = e.currentTarget;
-    const formData = new FormData(form);
-    
-    // Build the data object, including checkboxes
-    const projectType = formData.getAll("projectType");
-    const data: Record<string, unknown> = {};
-    formData.forEach((value, key) => {
-      if (key !== "projectType") {
-        data[key] = value;
-      }
-    });
-    data.projectType = projectType;
-
     try {
       const res = await fetch("/api/quote", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(data),
+        body: JSON.stringify(formData),
       });
 
       if (res.ok) {
         setSubmitted(true);
-        form.reset();
       } else {
         const json = await res.json();
         setError(json.error || "Something went wrong. Please try again.");
@@ -74,7 +89,6 @@ export function QuoteForm() {
 
   return (
     <form onSubmit={handleSubmit}>
-      {/* Error Message */}
       {error && (
         <div className="mb-6 rounded-md bg-error/10 border border-error/30 p-4 text-body-sm text-error">
           {error}
@@ -116,10 +130,10 @@ export function QuoteForm() {
       {step === 0 && (
         <div className="space-y-5">
           <h3 className="text-h3">Your Contact Information</h3>
-          <FormInput label="Full Name" name="name" placeholder="Your full name" required />
-          <FormInput label="Email Address" name="email" type="email" placeholder="you@example.com" required />
-          <FormInput label="Phone Number" name="phone" type="tel" placeholder="+256 XXX XXXXXX" />
-          <FormInput label="Company / Organization" name="company" placeholder="Your company name" />
+          <FormInput label="Full Name" name="name" placeholder="Your full name" required value={formData.name} onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField("name", e.target.value)} />
+          <FormInput label="Email Address" name="email" type="email" placeholder="you@example.com" required value={formData.email} onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField("email", e.target.value)} />
+          <FormInput label="Phone Number" name="phone" type="tel" placeholder="+256 XXX XXXXXX" value={formData.phone} onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField("phone", e.target.value)} />
+          <FormInput label="Company / Organization" name="company" placeholder="Your company name" value={formData.company} onChange={(e: React.ChangeEvent<HTMLInputElement>) => updateField("company", e.target.value)} />
         </div>
       )}
 
@@ -142,8 +156,15 @@ export function QuoteForm() {
             >
               <input
                 type="checkbox"
-                name="projectType"
                 value={type.toLowerCase().replace(/\s+/g, "-")}
+                checked={formData.projectType.includes(type.toLowerCase().replace(/\s+/g, "-"))}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  const newTypes = e.target.checked
+                    ? [...formData.projectType, value]
+                    : formData.projectType.filter((t) => t !== value);
+                  updateField("projectType", newTypes);
+                }}
                 className="h-4 w-4 rounded border-gray-medium text-teal focus:ring-teal"
               />
               <span className="text-body font-medium text-navy">{type}</span>
@@ -159,7 +180,10 @@ export function QuoteForm() {
           <FormSelect
             label="Estimated Budget Range"
             name="budget"
+            value={formData.budget}
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => updateField("budget", e.target.value)}
             options={[
+              { value: "", label: "Select..." },
               { value: "under-5k", label: "Under $5,000" },
               { value: "5k-15k", label: "$5,000 – $15,000" },
               { value: "15k-50k", label: "$15,000 – $50,000" },
@@ -170,7 +194,10 @@ export function QuoteForm() {
           <FormSelect
             label="Estimated Timeline"
             name="timeline"
+            value={formData.timeline}
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => updateField("timeline", e.target.value)}
             options={[
+              { value: "", label: "Select..." },
               { value: "1-month", label: "Within 1 Month" },
               { value: "1-3-months", label: "1–3 Months" },
               { value: "3-6-months", label: "3–6 Months" },
@@ -184,17 +211,24 @@ export function QuoteForm() {
             placeholder="Describe your project, goals, and any specific requirements..."
             required
             rows={6}
+            value={formData.description}
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => updateField("description", e.target.value)}
           />
           <FormTextarea
             label="Technical Preferences (Optional)"
             name="techPreferences"
             placeholder="Any preferred technologies, platforms, or constraints we should know about?"
             rows={3}
+            value={formData.techPreferences}
+            onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => updateField("techPreferences", e.target.value)}
           />
           <FormSelect
             label="How Did You Hear About Us?"
             name="source"
+            value={formData.source}
+            onChange={(e: React.ChangeEvent<HTMLSelectElement>) => updateField("source", e.target.value)}
             options={[
+              { value: "", label: "Select..." },
               { value: "google", label: "Google Search" },
               { value: "referral", label: "Referral" },
               { value: "social-media", label: "Social Media" },
@@ -205,7 +239,6 @@ export function QuoteForm() {
         </div>
       )}
 
-      {/* Navigation Buttons */}
       <div className="mt-8 flex justify-between">
         {step > 0 ? (
           <Button type="button" variant="secondary" onClick={prevStep}>
