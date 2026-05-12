@@ -8,6 +8,7 @@ import { WhatsAppButton } from "@/components/layout/WhatsAppButton";
 import { BackToTop } from "@/components/ui/BackToTop";
 import { SkipLink } from "@/components/ui/SkipLink";
 import { generateLocalBusinessSchema } from "@/lib/seo";
+import { PageTransition } from "@/components/shared/PageTransition";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
