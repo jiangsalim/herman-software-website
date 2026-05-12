@@ -78,9 +78,13 @@ export const metadata: Metadata = {
     google: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION || "",
   },
   icons: {
-    icon: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
-  },
+  icon: [
+    { url: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230A1F3F'/><text x='50' y='68' text-anchor='middle' font-family='Arial,sans-serif' font-size='55' font-weight='bold' fill='white'>HS</text></svg>" },
+  ],
+  apple: [
+    { url: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230A1F3F'/><text x='50' y='68' text-anchor='middle' font-family='Arial,sans-serif' font-size='55' font-weight='bold' fill='white'>HS</text></svg>" },
+  ],
+},
   alternates: {
     canonical: siteConfig.url,
   },
