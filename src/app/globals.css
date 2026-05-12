@@ -4,23 +4,8 @@
 
 :root {
   --color-navy: #0A1F3F;
-  --color-navy-light: #132F52;
-  --color-navy-dark: #07182E;
   --color-teal: #00C2BA;
-  --color-teal-dark: #00A8A0;
   --color-charcoal: #2D3748;
-  --color-gray-light: #F8F9FA;
-  --color-gray-medium: #A0AEC0;
-
-  --font-sans: 'Space Grotesk', sans-serif;
-  --font-mono: 'JetBrains Mono', monospace;
-
-  --radius-default: 6px;
-  --radius-card: 8px;
-  --radius-modal: 12px;
-
-  --shadow-card: 0 4px 12px rgba(10, 31, 63, 0.08);
-  --shadow-card-hover: 0 8px 24px rgba(10, 31, 63, 0.12);
 }
 
 @layer base {
@@ -31,24 +16,23 @@
   }
 
   body {
-    @apply font-sans text-base text-charcoal bg-white;
-    overflow-x: hidden;
+    @apply font-sans text-base antialiased;
   }
 
   h1 {
-    @apply text-3xl md:text-5xl font-bold text-navy leading-tight tracking-tight;
+    @apply text-3xl md:text-5xl font-bold text-navy dark:text-white leading-tight tracking-tight;
   }
 
   h2 {
-    @apply text-2xl md:text-4xl font-bold text-navy leading-tight tracking-tight;
+    @apply text-2xl md:text-4xl font-bold text-navy dark:text-white leading-tight tracking-tight;
   }
 
   h3 {
-    @apply text-xl md:text-2xl font-semibold text-navy;
+    @apply text-xl md:text-2xl font-semibold text-navy dark:text-white;
   }
 
   h4 {
-    @apply text-lg font-semibold text-navy;
+    @apply text-lg font-semibold text-navy dark:text-white;
   }
 
   :focus-visible {
@@ -56,7 +40,7 @@
   }
 
   ::selection {
-    @apply bg-teal/20 text-navy;
+    @apply bg-teal/20 text-navy dark:text-white;
   }
 }
 
@@ -74,7 +58,7 @@
   }
 
   .card-base {
-    @apply bg-white border border-gray-light rounded-card;
+    @apply bg-white dark:bg-navy border border-gray-light dark:border-navy-light rounded-card;
   }
 }
 
