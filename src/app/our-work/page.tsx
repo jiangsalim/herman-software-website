@@ -4,8 +4,7 @@ import { PortfolioContent } from "@/components/portfolio/PortfolioContent";
 
 export const metadata: Metadata = generatePageMetadata({
   title: "Our Portfolio — Software Projects & Case Studies",
-  description:
-    "Explore HERMAN's delivered projects across retail, hospitality, agriculture, logistics, and education. Real results, real technical depth.",
+  description: "Explore HERMAN's delivered projects across retail, hospitality, agriculture, logistics, and education.",
   path: "/our-work",
 });
 
@@ -20,7 +19,6 @@ export default function PortfolioPage() {
           </p>
         </div>
       </section>
-
       <section className="section-padding bg-white">
         <div className="container-site">
           <PortfolioContent />
