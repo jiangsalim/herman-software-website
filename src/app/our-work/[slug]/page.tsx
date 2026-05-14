@@ -1,15 +1,16 @@
 import { ProjectDetail } from "@/components/portfolio/ProjectDetail";
-import { projects } from "@/data/projects";
+import { getProject, getProjects } from "@/sanity/queries";
 import { notFound } from "next/navigation";
 
-export function generateStaticParams() {
-  return projects.map((project) => ({
+export async function generateStaticParams() {
+  const projects = await getProjects();
+  return projects.map((project: any) => ({
     slug: project.slug,
   }));
 }
 
-export default function ProjectPage({ params }: { params: { slug: string } }) {
-  const project = projects.find((p) => p.slug === params.slug);
+export default async function ProjectPage({ params }: { params: { slug: string } }) {
+  const project = await getProject(params.slug);
 
   if (!project) {
     notFound();
