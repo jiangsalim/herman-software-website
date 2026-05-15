@@ -64,4 +64,4 @@ export const projects: Project[] = [
     result: "Fuel costs reduced by 22%, on-time deliveries improved from 68% to 91%.",
     technologies: ["Node.js", "React", "MongoDB", "Google Maps API", "Socket.io"],
   },
-  {
+];
