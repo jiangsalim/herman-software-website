@@ -8,7 +8,7 @@ interface ProjectCardProps {
 
 // Screenshots for specific projects
 const screenshots: Record<string, string> = {
-  "mediavault-toolkit": "https://herman-software-website.vercel.app/images/projects/mediavault-home.jpg",
+  "mediavault-complete-media-toolkit": "https://herman-software-website.vercel.app/images/projects/mediavault-home.jpg",
 };
 
 export function ProjectCard({ title, sector, challenge, result, href }: ProjectCardProps) {
