@@ -1,7 +1,7 @@
 import { sanityClient } from "./client";
 
 export async function getBlogPosts() {
-  return sanityClient.fetch(
+  return sanityClient.fetch(`
     *[_type == "blogPost"] | order(publishedAt desc) {
       "slug": slug.current,
       title,
@@ -10,12 +10,12 @@ export async function getBlogPosts() {
       category,
       excerpt
     }
-  );
+  `);
 }
 
 export async function getBlogPost(slug: string) {
   return sanityClient.fetch(
-    *[_type == "blogPost" && slug.current ==  + "$slug" + ][0] {
+    `*[_type == "blogPost" && slug.current == $slug][0] {
       "slug": slug.current,
       title,
       author,
@@ -23,13 +23,13 @@ export async function getBlogPost(slug: string) {
       category,
       excerpt,
       body
-    },
+    }`,
     { slug }
   );
 }
 
 export async function getProjects() {
-  return sanityClient.fetch(
+  return sanityClient.fetch(`
     *[_type == "project"] | order(title asc) {
       "slug": slug.current,
       title,
@@ -40,12 +40,12 @@ export async function getProjects() {
       technologies,
       "thumbnail": thumbnail.asset->url
     }
-  );
+  `);
 }
 
 export async function getProject(slug: string) {
   return sanityClient.fetch(
-    *[_type == "project" && slug.current ==  + "$slug" + ][0] {
+    `*[_type == "project" && slug.current == $slug][0] {
       "slug": slug.current,
       title,
       sector,
@@ -54,7 +54,7 @@ export async function getProject(slug: string) {
       result,
       technologies,
       "thumbnail": thumbnail.asset->url
-    },
+    }`,
     { slug }
   );
 }
