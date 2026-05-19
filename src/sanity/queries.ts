@@ -52,8 +52,7 @@ export async function getProject(slug: string) {
       challenge,
       solution,
       result,
-      technologies,
-      "thumbnail": thumbnail.asset->url
+      technologies
     }`,
     { slug }
   );
