@@ -91,6 +91,7 @@ export async function getTeamMembers() {
   return sanityClient.fetch(`
     *[_type == "teamMember"] | order(order asc) {
       name,
+      "slug": slug.current,
       role,
       bio,
       "image": image.asset->url,
@@ -98,6 +99,33 @@ export async function getTeamMembers() {
       github
     }
   `);
+}
+
+export async function getTeamMember(slug: string) {
+  return sanityClient.fetch(
+    `*[_type == "teamMember" && slug.current == $slug][0] {
+      name,
+      "slug": slug.current,
+      role,
+      bio,
+      fullBio,
+      "image": image.asset->url,
+      skills,
+      "projects": projects[]-> {
+        "slug": slug.current,
+        title,
+        sector,
+        challenge,
+        result,
+        technologies,
+        "thumbnail": thumbnail.asset->url
+      },
+      linkedin,
+      github,
+      email
+    }`,
+    { slug }
+  );
 }
 
 // ─── FAQs ─────────────────────────────────────
@@ -202,47 +230,4 @@ export async function getTechnologies() {
       "icon": icon.asset->url
     }
   `);
-}
-
-// Add at the bottom of the file before the last line
-
-// ─── Team Members (List) ─────────────────────
-export async function getTeamMembers() {
-  return sanityClient.fetch(`
-    *[_type == "teamMember"] | order(order asc) {
-      name,
-      "slug": slug.current,
-      role,
-      bio,
-      "image": image.asset->url
-    }
-  `);
-}
-
-// ─── Single Team Member ──────────────────────
-export async function getTeamMember(slug: string) {
-  return sanityClient.fetch(
-    `*[_type == "teamMember" && slug.current == $slug][0] {
-      name,
-      "slug": slug.current,
-      role,
-      bio,
-      fullBio,
-      "image": image.asset->url,
-      skills,
-      "projects": projects[]-> {
-        "slug": slug.current,
-        title,
-        sector,
-        challenge,
-        result,
-        technologies,
-        "thumbnail": thumbnail.asset->url
-      },
-      linkedin,
-      github,
-      email
-    }`,
-    { slug }
-  );
 }
