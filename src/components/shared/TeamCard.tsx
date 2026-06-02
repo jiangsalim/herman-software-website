@@ -2,10 +2,10 @@ interface TeamCardProps {
   name: string;
   role: string;
   bio: string;
+  image?: string;
 }
 
-export function TeamCard({ name, role, bio }: TeamCardProps) {
-  // Generate initials from name
+export function TeamCard({ name, role, bio, image }: TeamCardProps) {
   const initials = name
     .split(" ")
     .map((n) => n[0])
@@ -14,9 +14,15 @@ export function TeamCard({ name, role, bio }: TeamCardProps) {
 
   return (
     <div className="card-base flex flex-col items-center p-6 text-center transition-all duration-300 hover:shadow-cardHover">
-      {/* Avatar Placeholder */}
-      <div className="mb-4 flex h-20 w-20 items-center justify-center rounded-full bg-navy text-2xl font-bold text-white">
-        {initials}
+      {/* Avatar */}
+      <div className="mb-4 h-20 w-20 overflow-hidden rounded-full bg-navy">
+        {image ? (
+          <img src={image} alt={name} className="h-full w-full object-cover" />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center text-2xl font-bold text-white">
+            {initials}
+          </div>
+        )}
       </div>
       <h3 className="text-h4">{name}</h3>
       <p className="mb-3 text-body-sm font-medium text-teal">{role}</p>

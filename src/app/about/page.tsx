@@ -1,17 +1,19 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import { SectionHeading } from "@/components/shared/SectionHeading";
 import { TeamCard } from "@/components/shared/TeamCard";
 import { Button } from "@/components/shared/Button";
-import { team } from "@/data/team";
+import { getTeamMembers } from "@/sanity/queries";
 import type { Metadata } from "next";
-import { generatePageMetadata } from "@/lib/seo";
-
-export const metadata: Metadata = generatePageMetadata({
-  title: "About Us — HERMAN Software Solutions",
-  description: "Learn about HERMAN Software Solutions Limited — a Ugandan software engineering firm delivering world-class technology from Jinja, Uganda. Meet our team, mission, and values.",
-  path: "/about",
-});
 
 export default function AboutPage() {
+  const [team, setTeam] = useState<any[]>([]);
+
+  useEffect(() => {
+    getTeamMembers().then(setTeam);
+  }, []);
+
   return (
     <>
       {/* Hero Banner */}
@@ -149,6 +151,7 @@ export default function AboutPage() {
                 name={member.name}
                 role={member.role}
                 bio={member.bio}
+                image={member.image}
               />
             ))}
           </div>
