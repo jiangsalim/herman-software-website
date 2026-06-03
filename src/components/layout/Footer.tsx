@@ -54,7 +54,7 @@ export function Footer() {
             </h4>
             <ul className="space-y-2">
               {navLinks.length > 0 ? (
-                navLinks.filter((link) => !link.isButton).slice(0, 6).map((link) => (
+                navLinks.filter((link) => !link.isButton).map((link) => (
                   <li key={link.href}>
                     <a href={link.href} className="text-body-sm text-gray-medium hover:text-teal transition-colors">
                       {link.label}
