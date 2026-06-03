@@ -21,6 +21,7 @@ export function JobApplicationForm({ jobTitle, onClose }: JobApplicationFormProp
   const [cv, setCV] = useState<File | null>(null);
   const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
   const [message, setMessage] = useState("");
+  const [whatsappLink, setWhatsappLink] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -58,6 +59,9 @@ export function JobApplicationForm({ jobTitle, onClose }: JobApplicationFormProp
       if (res.ok) {
         setStatus("success");
         setMessage("Application submitted! We'll review it and get back to you soon.");
+        if (data.whatsappLink) {
+          setWhatsappLink(data.whatsappLink);
+        }
       } else {
         setStatus("error");
         setMessage(data.error || "Something went wrong. Please try again.");
@@ -74,10 +78,12 @@ export function JobApplicationForm({ jobTitle, onClose }: JobApplicationFormProp
         <div className="bg-white rounded-card p-8 max-w-md w-full text-center">
           <div className="text-4xl mb-4">✅</div>
           <h3 className="mb-2">Application Submitted!</h3>
-          <p className="text-body-sm text-charcoal mb-4">{message}</p>
-          <button onClick={onClose} className="rounded-md bg-teal px-6 py-2 text-white hover:bg-teal-dark transition-colors">
-            Close
-          </button>
+          <p className="text-body-sm text-charcoal mb-6">{message}</p>
+          <div className="flex flex-col gap-3">
+            <button onClick={onClose} className="rounded-md bg-teal px-6 py-2 text-white hover:bg-teal-dark transition-colors">
+              Close
+            </button>
+          </div>
         </div>
       </div>
     );
