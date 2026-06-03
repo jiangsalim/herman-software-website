@@ -10,6 +10,7 @@ import { SkipLink } from "@/components/ui/SkipLink";
 import { PageTransition } from "@/components/shared/PageTransition";
 import { generateLocalBusinessSchema } from "@/lib/seo";
 import { CookieBanner } from "@/components/shared/CookieBanner";
+import { SpeedInsights } from "@vercel/speed-insights/next";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -205,6 +206,7 @@ export default function RootLayout({
   }}
 />
         <CookieBanner />
+        <SpeedInsights />
       </body>
     </html>
   );
