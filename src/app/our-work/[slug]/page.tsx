@@ -8,6 +8,7 @@ import { Button } from "@/components/shared/Button";
 import { Breadcrumbs } from "@/components/shared/Breadcrumbs";
 import { SocialShare } from "@/components/shared/SocialShare";
 import { Skeleton } from "@/components/shared/Skeleton";
+import { DownloadPDF } from "@/components/shared/DownloadPDF";
 
 export default function ProjectDetailPage() {
   const { slug } = useParams();
@@ -84,18 +85,14 @@ export default function ProjectDetailPage() {
           </div>
           {/* Download PDF */}
           <div className="mt-6">
-            <a
-              href={`/downloads/${project.slug}-case-study.pdf`}
-              className="inline-flex items-center gap-2 rounded-md border border-white/20 px-4 py-2 text-body-sm text-white hover:bg-white/10 transition-colors"
-              download
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                <polyline points="7 10 12 15 17 10" />
-                <line x1="12" y1="15" x2="12" y2="3" />
-              </svg>
-              Download Case Study (PDF)
-            </a>
+            <DownloadPDF
+              title={project.title}
+              sector={project.sector}
+              challenge={project.challenge}
+              solution={project.solution}
+              result={project.result}
+              technologies={project.technologies || []}
+            />
           </div>
         </div>
       </section>
