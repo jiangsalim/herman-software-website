@@ -1,36 +1,24 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import { SectionHeading } from "@/components/shared/SectionHeading";
 import { Button } from "@/components/shared/Button";
-import type { Metadata } from "next";
-import { generatePageMetadata } from "@/lib/seo";
-
-export const metadata: Metadata = generatePageMetadata({
-  title: "Careers — Join Our Team",
-  description: "Join HERMAN Software Solutions and build world-class software from Jinja, Uganda. We're always looking for talented engineers, designers, and consultants.",
-  path: "/careers",
-});
-
-const openings = [
-  {
-    title: "Senior Full-Stack Developer",
-    type: "Full-time",
-    location: "Jinja, Uganda (Hybrid)",
-    description: "We're looking for an experienced full-stack developer to lead client projects and mentor junior team members.",
-  },
-  {
-    title: "Mobile Developer (React Native)",
-    type: "Full-time",
-    location: "Jinja, Uganda (Remote possible)",
-    description: "Join our mobile team building cross-platform apps for Android and iOS serving thousands of users.",
-  },
-  {
-    title: "UI/UX Designer",
-    type: "Part-time / Contract",
-    location: "Remote",
-    description: "Help us create intuitive, beautiful interfaces for web and mobile applications.",
-  },
-];
+import { getJobs } from "@/sanity/queries";
+import { CardSkeleton } from "@/components/shared/Skeleton";
+import { JobApplicationForm } from "@/components/forms/JobApplicationForm";
 
 export default function CareersPage() {
+  const [jobs, setJobs] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedJob, setSelectedJob] = useState<string | null>(null);
+
+  useEffect(() => {
+    getJobs().then((data) => {
+      setJobs(data);
+      setLoading(false);
+    });
+  }, []);
+
   return (
     <>
       <section className="bg-navy py-20 text-center">
@@ -62,10 +50,14 @@ export default function CareersPage() {
           </div>
 
           <SectionHeading title="Open Positions" subtitle="Current opportunities to join our team." />
-          
-          {openings.length > 0 ? (
+
+          {loading ? (
             <div className="mx-auto max-w-3xl space-y-4">
-              {openings.map((job) => (
+              {Array.from({ length: 3 }).map((_, i) => <CardSkeleton key={i} />)}
+            </div>
+          ) : jobs.length > 0 ? (
+            <div className="mx-auto max-w-3xl space-y-4">
+              {jobs.map((job) => (
                 <div key={job.title} className="card-base p-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                   <div>
                     <h3 className="text-h4">{job.title}</h3>
@@ -75,7 +67,7 @@ export default function CareersPage() {
                       <span className="text-xs text-gray-medium">{job.location}</span>
                     </div>
                   </div>
-                  <Button href={`mailto:infohermansoftware@gmail.com?subject=Application: ${job.title}`} variant="primary" className="flex-shrink-0">
+                  <Button onClick={() => setSelectedJob(job.title)} variant="primary" className="flex-shrink-0">
                     Apply
                   </Button>
                 </div>
@@ -89,6 +81,10 @@ export default function CareersPage() {
           )}
         </div>
       </section>
+
+      {selectedJob && (
+        <JobApplicationForm jobTitle={selectedJob} onClose={() => setSelectedJob(null)} />
+      )}
     </>
   );
 }

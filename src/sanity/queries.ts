@@ -262,3 +262,19 @@ export async function getPricingPlans() {
     }
   `);
 }
+
+// ─── Jobs ─────────────────────────────────────
+export async function getJobs() {
+  return sanityClient.fetch(`
+    *[_type == "job" && active == true] | order(order asc) {
+      title,
+      "slug": slug.current,
+      type,
+      location,
+      description,
+      fullDescription,
+      requirements,
+      applyEmail
+    }
+  `);
+}
