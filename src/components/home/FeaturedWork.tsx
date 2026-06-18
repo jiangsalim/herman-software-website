@@ -31,6 +31,7 @@ export function FeaturedWork() {
               challenge={project.challenge}
               result={project.result}
               href={`/our-work/${project.slug}`}
+              thumbnail={project.thumbnail}
             />
           ))}
         </div>
