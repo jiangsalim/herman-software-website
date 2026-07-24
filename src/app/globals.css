@@ -115,3 +115,8 @@
     margin: 1.5cm;
   }
 }
+
+@font-face {
+  font-family: 'tawk-font';
+  font-display: swap;
+}

@@ -168,51 +168,55 @@ export default function RootLayout({
         <WhatsAppButton />
         <BackToTop />
 
-        {/* Tawk.to Live Chat — Enhanced */}
+        {/* Tawk.to Live Chat — Lazy Loaded */}
 <script
-  type="text/javascript"
   dangerouslySetInnerHTML={{
     __html: `
-      var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
-      
-      Tawk_API.onLoad = function(){
-        // Suppress performance logging CORS errors
-        Tawk_API.logPerformance = function(){};
-        
-        var visitorId = localStorage.getItem('tawk_visitor');
-        if (visitorId) {
-          Tawk_API.setAttributes({ id: visitorId }, function(){});
-        } else {
-          var newId = 'v_' + Date.now();
-          localStorage.setItem('tawk_visitor', newId);
-          Tawk_API.setAttributes({ id: newId }, function(){});
-        }
-        
-        // Proactive chat after 45 seconds on pricing/quote pages
-        var proactivePages = ['/get-quote', '/pricing', '/services', '/contact'];
-        var currentPath = window.location.pathname;
-        if (proactivePages.some(function(p) { return currentPath.startsWith(p); })) {
-          setTimeout(function() {
-            Tawk_API.maximize();
-          }, 45000);
-        }
-      };
-      
-      // Track page views for analytics
-      Tawk_API.onChatStarted = function(){
-        if (typeof gtag !== 'undefined') {
-          gtag('event', 'chat_started', { event_category: 'engagement' });
-        }
-      };
-      
-      (function(){
-        var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
-        s1.async=true;
-        s1.src='https://embed.tawk.to/6a031e36b31dab1c398e1064/1joe2s2dm';
-        s1.charset='UTF-8';
-        s1.setAttribute('crossorigin','*');
-        s0.parentNode.insertBefore(s1,s0);
-      })();
+      // Load Tawk.to after page is fully loaded + 3 second delay
+      window.addEventListener('load', function() {
+        setTimeout(function() {
+          var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+          
+          Tawk_API.onLoad = function(){
+            // Suppress performance logging CORS errors
+            Tawk_API.logPerformance = function(){};
+            
+            var visitorId = localStorage.getItem('tawk_visitor');
+            if (visitorId) {
+              Tawk_API.setAttributes({ id: visitorId }, function(){});
+            } else {
+              var newId = 'v_' + Date.now();
+              localStorage.setItem('tawk_visitor', newId);
+              Tawk_API.setAttributes({ id: newId }, function(){});
+            }
+            
+            // Proactive chat after 45 seconds on pricing/quote pages
+            var proactivePages = ['/get-quote', '/pricing', '/services', '/contact'];
+            var currentPath = window.location.pathname;
+            if (proactivePages.some(function(p) { return currentPath.startsWith(p); })) {
+              setTimeout(function() {
+                Tawk_API.maximize();
+              }, 45000);
+            }
+          };
+          
+          // Track page views for analytics
+          Tawk_API.onChatStarted = function(){
+            if (typeof gtag !== 'undefined') {
+              gtag('event', 'chat_started', { event_category: 'engagement' });
+            }
+          };
+          
+          (function(){
+            var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+            s1.async=true;
+            s1.src='https://embed.tawk.to/6a031e36b31dab1c398e1064/1joe2s2dm';
+            s1.charset='UTF-8';
+            s1.setAttribute('crossorigin','*');
+            s0.parentNode.insertBefore(s1,s0);
+          })();
+        }, 3000); // 3 second delay
+      });
     `,
   }}
 />
