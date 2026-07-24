@@ -2,15 +2,13 @@
 
 import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { ThemeToggle } from "@/components/ui/ThemeToggle";
+import { MobileMenu } from "@/components/layout/MobileMenu";
 import { getNavigation, getSiteSettings } from "@/sanity/queries";
 
 export function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [servicesOpen, setServicesOpen] = useState(false);
-  const [mobileServicesOpen, setMobileServicesOpen] = useState(false);
   const [navLinks, setNavLinks] = useState<any[]>([]);
   const [settings, setSettings] = useState<any>({});
   const pathname = usePathname();
@@ -70,45 +68,33 @@ export function Header() {
               <a href="/get-quote" className="rounded-md bg-teal px-4 py-2 text-body-sm font-medium text-white transition-colors hover:bg-teal-dark">Get a Quote</a>
             </div>
 
+            {/* Mobile: ThemeToggle + Hamburger */}
             <div className="flex items-center gap-1 lg:hidden">
               <ThemeToggle />
-              <button onClick={() => setMobileOpen(!mobileOpen)} className="flex items-center justify-center rounded-md p-2 text-navy dark:text-white" aria-label="Toggle menu">
-                {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+              <button
+                onClick={() => setMobileOpen(!mobileOpen)}
+                className="relative flex h-10 w-10 items-center justify-center rounded-lg p-2 text-navy transition-colors hover:bg-gray-light dark:text-white dark:hover:bg-navy-light"
+                aria-label={mobileOpen ? "Close menu" : "Open menu"}
+                aria-expanded={mobileOpen}
+              >
+                <div className="flex flex-col gap-1.5">
+                  <span className={cn("block h-0.5 w-5 bg-current transition-all duration-300", mobileOpen && "translate-y-2 rotate-45")} />
+                  <span className={cn("block h-0.5 w-5 bg-current transition-all duration-300", mobileOpen && "opacity-0")} />
+                  <span className={cn("block h-0.5 w-5 bg-current transition-all duration-300", mobileOpen && "-translate-y-2 -rotate-45")} />
+                </div>
               </button>
             </div>
           </div>
         </div>
       </header>
 
-      {/* Mobile Overlay */}
-      <div className={`fixed inset-0 top-16 z-[9999] bg-white dark:bg-navy-dark lg:hidden overflow-y-auto transition-opacity duration-200 ${mobileOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}>
-        <div className="container-site flex flex-col gap-1 py-4">
-          {navLinks.map((link) => (
-            <a key={link.href} href={link.href} onClick={() => setMobileOpen(false)} className={cn("rounded-md px-4 py-3 text-body font-medium transition-colors", isActive(link.href) ? "bg-gray-light dark:bg-navy-light text-teal" : "text-charcoal dark:text-white hover:bg-gray-light dark:hover:bg-navy-light hover:text-teal")}>{link.label}</a>
-          ))}
-          <div className="mt-4 flex flex-col gap-3 border-t border-gray-light dark:border-navy-light pt-6 px-4">
-            <a href="/client-portal" onClick={() => setMobileOpen(false)} className="rounded-md border border-navy dark:border-gray-light px-4 py-3 text-center text-body-sm font-medium text-navy dark:text-white">Client Portal</a>
-            <a href="/get-quote" onClick={() => setMobileOpen(false)} className="rounded-md bg-teal px-4 py-3 text-center text-body-sm font-medium text-white">Get a Quote</a>
-            <div className="flex items-center justify-center gap-4 pt-4">
-              {settings?.linkedin && (
-                <a href={settings.linkedin} target="_blank" rel="noopener noreferrer" className="rounded-md p-2 text-charcoal hover:text-teal dark:text-white dark:hover:text-teal transition-colors" aria-label="LinkedIn">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" /><rect width="4" height="12" x="2" y="9" /><circle cx="4" cy="4" r="2" /></svg>
-                </a>
-              )}
-              {settings?.twitter && (
-                <a href={settings.twitter} target="_blank" rel="noopener noreferrer" className="rounded-md p-2 text-charcoal hover:text-teal dark:text-white dark:hover:text-teal transition-colors" aria-label="Twitter">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 4s-.7 2.1-2 3.4c1.6 10-9.4 17.3-18 11.6 2.2.1 4.4-.6 6-2C3 15.5.5 9.6 3 5c2.2 2.6 5.6 4.1 9 4-.9-4.2 4-6.6 7-3.8 1.1 0 3-1.2 3-1.2z" /></svg>
-                </a>
-              )}
-              {settings?.facebook && (
-                <a href={settings.facebook} target="_blank" rel="noopener noreferrer" className="rounded-md p-2 text-charcoal hover:text-teal dark:text-white dark:hover:text-teal transition-colors" aria-label="Facebook">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" /></svg>
-                </a>
-              )}
-            </div>
-          </div>
-        </div>
-      </div>
+      {/* Smooth Mobile Menu */}
+      <MobileMenu
+        isOpen={mobileOpen}
+        onClose={() => setMobileOpen(false)}
+        navLinks={navLinks}
+        settings={settings}
+      />
     </>
   );
 }
