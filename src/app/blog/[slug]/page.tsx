@@ -11,6 +11,7 @@ import { BlogCard } from "@/components/shared/BlogCard";
 import { Button } from "@/components/shared/Button";
 import { Skeleton } from "@/components/shared/Skeleton";
 import { PortableText } from "@portabletext/react";
+import { generateArticleSchema } from "@/lib/seo";
 
 export default function BlogPostPage() {
   const { slug } = useParams();
@@ -82,6 +83,12 @@ export default function BlogPostPage() {
   return (
     <>
       <Head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+           __html: JSON.stringify(generateArticleSchema(post)),
+         }}
+        />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}

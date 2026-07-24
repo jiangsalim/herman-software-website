@@ -118,3 +118,99 @@ export function generateFAQSchema(faqs: { question: string; answer: string }[]) 
     })),
   };
 }
+
+// Software Application Schema
+export function generateSoftwareAppSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    name: siteConfig.name,
+    applicationCategory: "BusinessApplication",
+    operatingSystem: "Web, Android, iOS",
+    offers: {
+      "@type": "Offer",
+      price: "0",
+      priceCurrency: "UGX",
+    },
+    aggregateRating: {
+      "@type": "AggregateRating",
+      ratingValue: "4.8",
+      ratingCount: "30",
+    },
+  };
+}
+
+// Organization Schema (more detailed)
+export function generateOrganizationSchema() {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: siteConfig.name,
+    url: siteConfig.url,
+    logo: `${siteConfig.url}/favicon.svg`,
+    contactPoint: {
+      "@type": "ContactPoint",
+      telephone: siteConfig.phone,
+      contactType: "sales",
+      email: siteConfig.email,
+      availableLanguage: ["English"],
+    },
+    sameAs: [
+      siteConfig.social.linkedin,
+      siteConfig.social.twitter,
+      siteConfig.social.facebook,
+    ],
+    address: {
+      "@type": "PostalAddress",
+      streetAddress: "Haji Tarmchi",
+      addressLocality: "Jinja",
+      addressCountry: "UG",
+    },
+  };
+}
+
+// Article Schema for Blog Posts
+export function generateArticleSchema(post: any) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.excerpt,
+    author: {
+      "@type": "Person",
+      name: post.author || "HERMAN Engineering Team",
+    },
+    datePublished: post.publishedAt,
+    dateModified: post.publishedAt,
+    publisher: {
+      "@type": "Organization",
+      name: siteConfig.name,
+      logo: {
+        "@type": "ImageObject",
+        url: `${siteConfig.url}/favicon.svg`,
+      },
+    },
+  };
+}
+
+// Review Schema for Testimonials
+export function generateReviewSchema(testimonials: any[]) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: siteConfig.name,
+    review: testimonials.map((t: any) => ({
+      "@type": "Review",
+      reviewBody: t.quote,
+      author: {
+        "@type": "Person",
+        name: t.name,
+      },
+      reviewRating: {
+        "@type": "Rating",
+        ratingValue: t.rating || "5",
+        bestRating: "5",
+      },
+    })),
+  };
+}

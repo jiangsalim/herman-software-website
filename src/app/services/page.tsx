@@ -5,6 +5,8 @@ import { SectionHeading } from "@/components/shared/SectionHeading";
 import { Button } from "@/components/shared/Button";
 import { getServices, getProcessSteps } from "@/sanity/queries";
 import { CardSkeleton } from "@/components/shared/Skeleton";
+import { generateServiceSchema } from "@/lib/seo";
+import { siteConfig } from "@/data/site-config";
 
 const iconMap: Record<string, React.ReactNode> = {
   code: (
@@ -46,6 +48,23 @@ export default function ServicesPage() {
       setLoading(false);
     });
   }, []);
+
+
+   // Inject service schemas into head
+  useEffect(() => {
+    if (services.length > 0) {
+      document.querySelectorAll('script[data-schema="service"]').forEach(el => el.remove());
+      services.forEach((service: any) => {
+        const script = document.createElement('script');
+        script.type = 'application/ld+json';
+        script.setAttribute('data-schema', 'service');
+        script.textContent = JSON.stringify(
+          generateServiceSchema(service.title, service.description, `${siteConfig.url}${service.link || `/services/${service.title.toLowerCase().replace(/\s+/g, "-")}`}`)
+        );
+        document.head.appendChild(script);
+      });
+    }
+  }, [services]);
 
   return (
     <>

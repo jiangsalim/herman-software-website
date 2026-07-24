@@ -11,6 +11,7 @@ import { PageTransition } from "@/components/shared/PageTransition";
 import { generateLocalBusinessSchema } from "@/lib/seo";
 import { CookieBanner } from "@/components/shared/CookieBanner";
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { generateOrganizationSchema, generateSoftwareAppSchema } from "@/lib/seo";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -143,6 +144,18 @@ export default function RootLayout({
               })();
             `,
           }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+           __html: JSON.stringify(generateOrganizationSchema()),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(generateSoftwareAppSchema()),
+         }}
         />
       </head>
       <body className="flex min-h-screen flex-col bg-white text-charcoal dark:bg-navy-dark dark:text-gray-light transition-colors">

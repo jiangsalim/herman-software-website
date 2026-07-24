@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /client-portal
+
+Sitemap: https://herman-software-website.vercel.app/sitemap.xml
