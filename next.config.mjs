@@ -2,7 +2,6 @@
 const nextConfig = {
   compress: true,
 
-  // Image optimization
   images: {
     formats: ["image/avif", "image/webp"],
     remotePatterns: [
@@ -14,7 +13,15 @@ const nextConfig = {
     ],
   },
 
-  // Security headers
+  // Enable static optimization
+  reactStrictMode: true,
+  
+  // Performance optimizations
+  experimental: {
+    optimizeCss: true,
+    optimizePackageImports: ['lucide-react'],
+  },
+
   async headers() {
     return [
       {
@@ -24,7 +31,17 @@ const nextConfig = {
           { key: "X-Frame-Options", value: "DENY" },
           { key: "X-XSS-Protection", value: "1; mode=block" },
           { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
         ],
+      },
+      // Cache static assets
+      {
+        source: "/images/(.*)",
+        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
+      },
+      {
+        source: "/fonts/(.*)",
+        headers: [{ key: "Cache-Control", value: "public, max-age=31536000, immutable" }],
       },
     ];
   },
