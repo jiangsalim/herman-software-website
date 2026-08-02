@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 
 const AMENITY_TYPES = [
   { value: "restaurant", label: "🍽️ Restaurants", icon: "🍽️" },
@@ -13,74 +13,87 @@ const AMENITY_TYPES = [
   { value: "parking", label: "🅿️ Parking", icon: "🅿️" },
 ];
 
-const OFFICE_LOCATION = { lat: 0.4397, lng: 33.2030 }; // Jinja, Uganda
+const OFFICE_LOCATION = { lat: 0.4397, lng: 33.2030 };
 
 export function AmenityMap() {
   const [selectedAmenity, setSelectedAmenity] = useState("restaurant");
   const [places, setPlaces] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
+  const [mapLoaded, setMapLoaded] = useState(false);
   const mapRef = useRef<HTMLDivElement>(null);
   const googleMapRef = useRef<any>(null);
   const markersRef = useRef<any[]>([]);
 
-  // Load Google Maps
+  // Load Google Maps script
   useEffect(() => {
-    if (!mapRef.current) return;
-
-    const loadMap = () => {
-      const google = (window as any).google;
-      if (!google) return;
-
-      const map = new google.maps.Map(mapRef.current!, {
-        center: OFFICE_LOCATION,
-        zoom: 15,
-        styles: [
-          { elementType: "geometry", stylers: [{ color: "#f5f5f5" }] },
-          { elementType: "labels.icon", stylers: [{ visibility: "off" }] },
-          { elementType: "labels.text.fill", stylers: [{ color: "#616161" }] },
-          { elementType: "labels.text.stroke", stylers: [{ color: "#f5f5f5" }] },
-          { featureType: "water", elementType: "geometry", stylers: [{ color: "#c9c9c9" }] },
-          { featureType: "water", elementType: "labels.text.fill", stylers: [{ color: "#9e9e9e" }] },
-        ],
-      });
-
-      // Office marker
-      new google.maps.Marker({
-        position: OFFICE_LOCATION,
-        map,
-        title: "HERMAN Software Solutions",
-        icon: {
-          path: google.maps.SymbolPath.CIRCLE,
-          scale: 8,
-          fillColor: "#0A1F3F",
-          fillOpacity: 1,
-          strokeColor: "#00C2BA",
-          strokeWeight: 3,
-        },
-      });
-
-      googleMapRef.current = map;
-      searchPlaces(google, map, selectedAmenity);
-    };
-
-    // Load Google Maps script if not already loaded
-    if (!(window as any).google) {
-      const script = document.createElement("script");
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY}&libraries=places&loading=async`;
-      script.async = true;
-      script.onload = loadMap;
-      document.head.appendChild(script);
-    } else {
-      loadMap();
+    if ((window as any).google?.maps) {
+      setMapLoaded(true);
+      return;
     }
+
+    const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY;
+    if (!apiKey) {
+      console.error("Google Maps API key not found");
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&loading=async`;
+    script.async = true;
+    script.defer = true;
+    script.onload = () => setMapLoaded(true);
+    script.onerror = () => console.error("Failed to load Google Maps");
+    document.head.appendChild(script);
+
+    return () => {
+      // Clean up script if component unmounts before load
+    };
   }, []);
+
+  // Initialize map once script is loaded
+  useEffect(() => {
+    if (!mapLoaded || !mapRef.current) return;
+
+    const google = (window as any).google;
+    if (!google?.maps) return;
+
+    const map = new google.maps.Map(mapRef.current, {
+      center: OFFICE_LOCATION,
+      zoom: 15,
+      styles: [
+        { elementType: "geometry", stylers: [{ color: "#f5f5f5" }] },
+        { elementType: "labels.icon", stylers: [{ visibility: "off" }] },
+        { elementType: "labels.text.fill", stylers: [{ color: "#616161" }] },
+        { elementType: "labels.text.stroke", stylers: [{ color: "#f5f5f5" }] },
+        { featureType: "water", elementType: "geometry", stylers: [{ color: "#c9c9c9" }] },
+        { featureType: "water", elementType: "labels.text.fill", stylers: [{ color: "#9e9e9e" }] },
+      ],
+    });
+
+    // Office marker
+    new google.maps.Marker({
+      position: OFFICE_LOCATION,
+      map,
+      title: "HERMAN Software Solutions",
+      icon: {
+        path: google.maps.SymbolPath.CIRCLE,
+        scale: 8,
+        fillColor: "#0A1F3F",
+        fillOpacity: 1,
+        strokeColor: "#00C2BA",
+        strokeWeight: 3,
+      },
+    });
+
+    googleMapRef.current = map;
+    searchPlaces(google, map, selectedAmenity);
+  }, [mapLoaded]);
 
   const searchPlaces = (google: any, map: any, type: string) => {
     if (!google || !map) return;
 
     setLoading(true);
 
-    // Clear old markers
     markersRef.current.forEach((m) => m.setMap(null));
     markersRef.current = [];
 
@@ -100,10 +113,6 @@ export function AmenityMap() {
             position: place.geometry.location,
             map,
             title: place.name,
-            icon: {
-              url: `data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="%2300C2BA" stroke="%23FFFFFF" stroke-width="1.5"><circle cx="12" cy="10" r="3"/><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/></svg>`,
-              scaledSize: new google.maps.Size(30, 30),
-            },
           });
 
           const infoWindow = new google.maps.InfoWindow({
@@ -123,8 +132,9 @@ export function AmenityMap() {
 
   const handleAmenityChange = (type: string) => {
     setSelectedAmenity(type);
-    if (googleMapRef.current && (window as any).google) {
-      searchPlaces((window as any).google, googleMapRef.current, type);
+    const google = (window as any).google;
+    if (googleMapRef.current && google?.maps) {
+      searchPlaces(google, googleMapRef.current, type);
     }
   };
 
@@ -157,9 +167,16 @@ export function AmenityMap() {
 
         {/* Map + List */}
         <div className="grid gap-6 lg:grid-cols-3">
-          {/* Map */}
           <div className="lg:col-span-2 rounded-xl overflow-hidden border border-gray-light shadow-sm" style={{ minHeight: "400px" }}>
-            <div ref={mapRef} style={{ width: "100%", height: "400px" }} />
+            {!mapLoaded && (
+              <div className="flex items-center justify-center h-[400px] bg-gray-100">
+                <div className="text-center">
+                  <div className="w-8 h-8 border-2 border-teal border-t-transparent rounded-full animate-spin mx-auto mb-3" />
+                  <p className="text-sm text-charcoal">Loading map...</p>
+                </div>
+              </div>
+            )}
+            <div ref={mapRef} style={{ width: "100%", height: mapLoaded ? "400px" : "0" }} />
           </div>
 
           {/* Places List */}
