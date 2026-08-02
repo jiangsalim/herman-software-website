@@ -28,13 +28,11 @@ export function AmenityMap() {
     const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY;
     if (!apiKey || !mapRef.current) return;
 
-    // Check if already loaded
     if ((window as any).google?.maps) {
       initMap();
       return;
     }
 
-    // Load script
     const script = document.createElement("script");
     script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&loading=async`;
     script.async = true;
@@ -63,7 +61,6 @@ export function AmenityMap() {
       ],
     });
 
-    // Office marker
     new google.maps.Marker({
       position: OFFICE_LOCATION,
       map,
@@ -144,23 +141,22 @@ export function AmenityMap() {
         </div>
 
         <div className="grid gap-6 lg:grid-cols-3">
-          <div className="lg:col-span-2 rounded-xl overflow-hidden border border-gray-light shadow-sm" style={{ minHeight: "400px" }}>
+          {/* Map — always visible */}
+          <div className="lg:col-span-2 rounded-xl overflow-hidden border border-gray-light shadow-sm relative" style={{ minHeight: "400px" }}>
+            {/* Loading overlay */}
             {loading && (
-              <div className="flex items-center justify-center h-[400px] bg-gray-100">
+              <div className="absolute inset-0 z-10 flex items-center justify-center bg-gray-100 rounded-xl">
                 <div className="text-center">
                   <div className="w-8 h-8 border-2 border-teal border-t-transparent rounded-full animate-spin mx-auto mb-3" />
                   <p className="text-sm text-charcoal">Loading map...</p>
                 </div>
               </div>
             )}
-            {mapError && (
-              <div className="flex items-center justify-center h-[400px] bg-gray-100">
-                <p className="text-sm text-red-500">Failed to load map. Please try again later.</p>
-              </div>
-            )}
+            {/* Map container — ALWAYS rendered at full height */}
             <div ref={mapRef} style={{ width: "100%", height: "400px" }} />
           </div>
 
+          {/* Places List */}
           <div className="bg-white rounded-xl border border-gray-light p-4 max-h-[400px] overflow-y-auto">
             <h4 className="text-h5 font-semibold text-navy mb-3">
               Nearby {AMENITY_TYPES.find((a) => a.value === selectedAmenity)?.label}
