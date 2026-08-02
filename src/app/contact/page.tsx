@@ -3,6 +3,7 @@ import { generatePageMetadata } from "@/lib/seo";
 import { ContactForm } from "@/components/forms/ContactForm";
 import { MapEmbed } from "@/components/ui/MapEmbed";
 import { FAQAccordion } from "@/components/shared/FAQAccordion";
+import { AmenityMap } from "@/components/shared/AmenityMap";
 import { faqs } from "@/data/faqs";
 import { siteConfig } from "@/data/site-config";
 
@@ -98,6 +99,9 @@ export default function ContactPage() {
           </div>
         </div>
       </section>
+
+      {/* Amenity Map — Explore Around Our Office */}
+      <AmenityMap />
 
       {/* FAQ Section */}
       <section className="section-padding bg-gray-light">
