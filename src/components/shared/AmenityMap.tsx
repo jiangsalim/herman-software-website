@@ -24,29 +24,13 @@ export function AmenityMap() {
   const googleMapRef = useRef<any>(null);
   const markersRef = useRef<any[]>([]);
 
-  useEffect(() => {
-    const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY;
-    if (!apiKey || !mapRef.current) return;
-
-    if ((window as any).google?.maps) {
-      initMap();
-      return;
-    }
-
-    const script = document.createElement("script");
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&loading=async`;
-    script.async = true;
-    script.onload = () => initMap();
-    script.onerror = () => {
-      setMapError(true);
-      setLoading(false);
-    };
-    document.head.appendChild(script);
-  }, []);
-
   const initMap = () => {
     const google = (window as any).google;
-    if (!google?.maps || !mapRef.current) return;
+    if (!google?.maps || !mapRef.current) {
+      setLoading(false);
+      setMapError(true);
+      return;
+    }
 
     const map = new google.maps.Map(mapRef.current, {
       center: OFFICE_LOCATION,
@@ -79,6 +63,30 @@ export function AmenityMap() {
     searchPlaces(google, map, selectedAmenity);
     setLoading(false);
   };
+
+  useEffect(() => {
+    const apiKey = process.env.NEXT_PUBLIC_GOOGLE_MAPS_KEY;
+    if (!apiKey || !mapRef.current) return;
+
+    // Define global callback before loading script
+    (window as any).initAmenityMap = () => {
+      initMap();
+      delete (window as any).initAmenityMap;
+    };
+
+    const script = document.createElement("script");
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places&callback=initAmenityMap`;
+    script.async = true;
+    script.onerror = () => {
+      setMapError(true);
+      setLoading(false);
+    };
+    document.head.appendChild(script);
+
+    return () => {
+      delete (window as any).initAmenityMap;
+    };
+  }, []);
 
   const searchPlaces = (google: any, map: any, type: string) => {
     markersRef.current.forEach((m) => m.setMap(null));
@@ -141,9 +149,7 @@ export function AmenityMap() {
         </div>
 
         <div className="grid gap-6 lg:grid-cols-3">
-          {/* Map — always visible */}
           <div className="lg:col-span-2 rounded-xl overflow-hidden border border-gray-light shadow-sm relative" style={{ minHeight: "400px" }}>
-            {/* Loading overlay */}
             {loading && (
               <div className="absolute inset-0 z-10 flex items-center justify-center bg-gray-100 rounded-xl">
                 <div className="text-center">
@@ -152,11 +158,14 @@ export function AmenityMap() {
                 </div>
               </div>
             )}
-            {/* Map container — ALWAYS rendered at full height */}
+            {mapError && (
+              <div className="absolute inset-0 z-10 flex items-center justify-center bg-gray-100 rounded-xl">
+                <p className="text-sm text-red-500">Failed to load map. Check API key.</p>
+              </div>
+            )}
             <div ref={mapRef} style={{ width: "100%", height: "400px" }} />
           </div>
 
-          {/* Places List */}
           <div className="bg-white rounded-xl border border-gray-light p-4 max-h-[400px] overflow-y-auto">
             <h4 className="text-h5 font-semibold text-navy mb-3">
               Nearby {AMENITY_TYPES.find((a) => a.value === selectedAmenity)?.label}
