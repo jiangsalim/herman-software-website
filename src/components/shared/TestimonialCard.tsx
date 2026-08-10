@@ -3,17 +3,31 @@ interface TestimonialCardProps {
   role: string;
   quote: string;
   rating?: number;
+  avatar?: string;
 }
 
-export function TestimonialCard({ name, role, quote, rating }: TestimonialCardProps) {
+export function TestimonialCard({ name, role, quote, rating, avatar }: TestimonialCardProps) {
   return (
     <div className="card-base flex flex-col gap-4 p-6 transition-all duration-300 hover:shadow-cardHover">
-      {/* Stars + Quote Icon */}
+      {/* Avatar + Stars + Quote Icon */}
       <div className="flex items-center justify-between">
-        <div className="text-teal">
-          <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
-            <path d="M10 11h-4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1zm8 0h-4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1zM6 13v4a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-4H6zm8 0v4a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-4h-6z" />
-          </svg>
+        <div className="flex items-center gap-3">
+          {/* Avatar */}
+          <div className="h-12 w-12 flex-shrink-0 overflow-hidden rounded-full bg-navy/10">
+            {avatar ? (
+              <img src={avatar} alt={name} className="h-full w-full object-cover" />
+            ) : (
+              <div className="flex h-full w-full items-center justify-center text-sm font-bold text-navy">
+                {name.split(" ").map(n => n[0]).join("").toUpperCase().slice(0, 2)}
+              </div>
+            )}
+          </div>
+          {/* Quote Icon */}
+          <div className="text-teal">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M10 11h-4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1zm8 0h-4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v4a1 1 0 0 1-1 1zM6 13v4a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-4H6zm8 0v4a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-4h-6z" />
+            </svg>
+          </div>
         </div>
         {rating && (
           <div className="flex gap-0.5">

@@ -32,7 +32,14 @@ export function Testimonials() {
         {/* Desktop: Grid */}
         <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {testimonials.slice(0, 4).map((t) => (
-            <TestimonialCard key={t.name} name={t.name} role={t.role} quote={t.quote} rating={t.rating} />
+            <TestimonialCard
+              key={t.name}
+              name={t.name}
+              role={t.role}
+              quote={t.quote}
+              rating={t.rating}
+              avatar={t.avatar}
+            />
           ))}
         </div>
 
@@ -44,6 +51,7 @@ export function Testimonials() {
               role={testimonials[active]?.role}
               quote={testimonials[active]?.quote}
               rating={testimonials[active]?.rating}
+              avatar={testimonials[active]?.avatar}
             />
           )}
           <div className="mt-4 flex justify-center gap-2">
