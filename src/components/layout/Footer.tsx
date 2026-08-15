@@ -109,7 +109,7 @@ export function Footer() {
               Contact Us
             </h4>
             <ul className="space-y-2 text-body-sm text-gray-medium">
-              <li>{settings?.address || "Haji Tarmchi, Jinja, Uganda"}</li>
+              <li>{settings?.address || "Gabula Rd, Jinja, Uganda"}</li>
               <li>
                 <a href={`mailto:${settings?.email || "infohermansoftware@gmail.com"}`} className="hover:text-teal transition-colors">
                   {settings?.email || "infohermansoftware@gmail.com"}

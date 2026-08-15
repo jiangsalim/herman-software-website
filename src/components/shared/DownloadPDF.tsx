@@ -110,7 +110,7 @@ export function DownloadPDF({ title, sector, challenge, solution, result, techno
     y += 8;
     doc.setFontSize(8);
     doc.setTextColor(107, 114, 128);
-    doc.text("HERMAN Software Solutions Limited | Haji Tarmchi, Jinja, Uganda", margin, y);
+    doc.text("HERMAN Software Solutions Limited | Gabula Rd, Jinja, Uganda", margin, y);
     y += 5;
     doc.text("infohermansoftware@gmail.com | +256772723188 | herman-software-website.vercel.app", margin, y);
 

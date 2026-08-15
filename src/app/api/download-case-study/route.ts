@@ -35,7 +35,7 @@ ${technologies}
 
 --------------------------------------------------
 HERMAN Software Solutions Limited
-Haji Tarmchi, Jinja, Uganda
+Gabula Rd, Jinja, Uganda
 infohermansoftware@gmail.com | +256772723188
 herman-software-website.vercel.app
 `;

@@ -49,7 +49,7 @@ export default function AboutPage() {
                 operations, design clean architectures, and stay with you long after deployment.
               </p>
               <p>
-                We are proudly based at Haji Tarmchi, Jinja — and from here, we serve clients locally,
+                We are proudly based at Gabula Rd, Jinja — and from here, we serve clients locally,
                 regionally, and internationally.
               </p>
             </div>

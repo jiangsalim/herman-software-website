@@ -49,7 +49,7 @@ export function generateLocalBusinessSchema() {
     description: siteConfig.description,
     address: {
       "@type": "PostalAddress",
-      streetAddress: "Haji Tarmchi",
+      streetAddress: "GAbula Rd",
       addressLocality: "Jinja",
       addressCountry: "UG",
     },
@@ -162,7 +162,7 @@ export function generateOrganizationSchema() {
     ],
     address: {
       "@type": "PostalAddress",
-      streetAddress: "Haji Tarmchi",
+      streetAddress: "Gabula Rd",
       addressLocality: "Jinja",
       addressCountry: "UG",
     },

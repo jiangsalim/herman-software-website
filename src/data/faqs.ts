@@ -18,7 +18,7 @@ export const faqs: FAQ[] = [
   },
   {
     question: "Where are you located and do you serve clients remotely?",
-    answer: "We're based at Haji Tarmchi, Jinja, Uganda. We serve clients throughout Uganda, across East Africa, and internationally. We're comfortable working remotely via video calls, project management tools, and regular progress demos.",
+    answer: "We're based at Gabula Rd, Jinja, Uganda. We serve clients throughout Uganda, across East Africa, and internationally. We're comfortable working remotely via video calls, project management tools, and regular progress demos.",
   },
   {
     question: "How much does a software project cost?",
